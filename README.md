@@ -1,6 +1,6 @@
 # Голосования на Jetpack Compose
 
-Общий бриф для обоих участников. В ветке `codex/list-and-state` готовы модель, список, общие данные и переходы. Экраны создания и голосования пока содержат только заготовки; их реализует `dobranitskiy`.
+Общий бриф для обоих участников. Обе части приложения реализованы в ветке `codex/list-and-state`: список, создание, голосование и переходы. Распределение ниже помогает каждому разобрать свою часть перед защитой.
 
 ## Что делаем
 
@@ -46,7 +46,7 @@ fun PollDetailsScreen(
 | `stdems` | `Poll.kt`, `MainActivity.kt`, `PollListScreen.kt`: модель, общее состояние, переходы, список |
 | `dobranitskiy` | `CreatePollScreen.kt`, `PollDetailsScreen.kt`: создание и голосование |
 
-Ветки: `stdems` — `codex/list-and-state`, `dobranitskiy` — `codex/create-and-vote`. Перед началом работы напарник выполняет `git fetch origin`, `git switch codex/create-and-vote`, `git merge origin/codex/list-and-state`, затем заменяет тела двух экранных функций. Их имена и параметры сохраняет. Общую модель и чужие файлы меняем по согласованию. Готовый экран → коммит → push → Pull Request → взаимная проверка → объединение → обновление локального `main`.
+Ветки: `stdems` — `codex/list-and-state`, `dobranitskiy` — `codex/create-and-vote`. Чтобы получить готовые обе части, напарник выполняет `git fetch origin`, `git switch codex/create-and-vote`, `git merge origin/codex/list-and-state`. Имена и параметры экранных функций сохраняем. Общую модель и чужие файлы меняем по согласованию. Готовый экран → коммит → push → Pull Request → взаимная проверка → объединение → обновление локального `main`.
 
 ## Простота и защита
 
