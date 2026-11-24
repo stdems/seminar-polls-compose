@@ -38,7 +38,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun PollApp() {
     val polls = remember { mutableStateListOf<Poll>() }
-    var nextIdentifier by remember { mutableIntStateOf(1) }
     var isCreatingPoll by remember { mutableStateOf(false) }
     var selectedPollIdentifier by remember { mutableIntStateOf(0) }
     var selectedFilter by remember { mutableStateOf(PollFilter.ALL) }
@@ -53,7 +52,7 @@ fun PollApp() {
         isCreatingPoll -> CreatePollScreen(
             onCreate = { question, firstAnswer, secondAnswer ->
                 val newPoll = Poll(
-                    identifier = nextIdentifier,
+                    identifier = polls.size + 1,
                     question = question.trim(),
                     firstAnswer = firstAnswer.trim(),
                     secondAnswer = secondAnswer.trim()
@@ -63,7 +62,6 @@ fun PollApp() {
                     newPoll.secondAnswer.isNotEmpty()
                 ) {
                     polls.add(newPoll)
-                    nextIdentifier++
                     isCreatingPoll = false
                     selectedFilter = PollFilter.ALL
                 }
