@@ -41,6 +41,7 @@ fun PollApp() {
     var nextIdentifier by remember { mutableIntStateOf(1) }
     var isCreatingPoll by remember { mutableStateOf(false) }
     var selectedPollIdentifier by remember { mutableIntStateOf(0) }
+    var selectedFilter by remember { mutableStateOf(PollFilter.ALL) }
     val selectedPollIndex = polls.indexOfFirst { it.identifier == selectedPollIdentifier }
 
     BackHandler(enabled = isCreatingPoll || selectedPollIndex >= 0) {
@@ -64,26 +65,40 @@ fun PollApp() {
                     polls.add(newPoll)
                     nextIdentifier++
                     isCreatingPoll = false
+                    selectedFilter = PollFilter.ALL
                 }
             },
             onBack = { isCreatingPoll = false }
         )
 
-        selectedPollIndex >= 0 -> PollDetailsScreen(
-            poll = polls[selectedPollIndex],
-            onFirstVote = {
-                val poll = polls[selectedPollIndex]
-                polls[selectedPollIndex] = poll.copy(firstVotes = poll.firstVotes + 1)
-            },
-            onSecondVote = {
-                val poll = polls[selectedPollIndex]
-                polls[selectedPollIndex] = poll.copy(secondVotes = poll.secondVotes + 1)
-            },
-            onBack = { selectedPollIdentifier = 0 }
-        )
+        selectedPollIndex >= 0 -> {
+            val poll = polls[selectedPollIndex]
+            if (poll.isFinished) {
+                PollResultsScreen(
+                    poll = poll,
+                    onBack = { selectedPollIdentifier = 0 }
+                )
+            } else {
+                PollDetailsScreen(
+                    poll = poll,
+                    onVote = { answer ->
+                        polls[selectedPollIndex] = polls[selectedPollIndex].vote(answer)
+                    },
+                    onNextParticipant = {
+                        polls[selectedPollIndex] = polls[selectedPollIndex].nextParticipant()
+                    },
+                    onFinish = {
+                        polls[selectedPollIndex] = polls[selectedPollIndex].finish()
+                    },
+                    onBack = { selectedPollIdentifier = 0 }
+                )
+            }
+        }
 
         else -> PollListScreen(
             polls = polls,
+            selectedFilter = selectedFilter,
+            onFilterChange = { selectedFilter = it },
             onCreate = { isCreatingPoll = true },
             onOpen = { identifier -> selectedPollIdentifier = identifier }
         )
